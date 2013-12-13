@@ -6192,7 +6192,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
     this.defaultOptions = {
       items: {
         'row_above': {
-          name: 'Insert row above',
+          name: '在上方插入一行',
           callback: function(key, selection){
             this.alter("insert_row", selection.start.row());
           },
@@ -6201,7 +6201,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
           }
         },
         'row_below': {
-          name: 'Insert row below',
+          name: '在下方插入一行',
           callback: function(key, selection){
             this.alter("insert_row", selection.end.row() + 1);
           },
@@ -6230,7 +6230,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
         },
         "hsep2": ContextMenu.SEPARATOR,
         'remove_row': {
-          name: 'Remove row',
+          name: '删除当前行',
           callback: function(key, selection){
             var amount = selection.end.row() - selection.start.row() + 1;
             this.alter("remove_row", selection.start.row(), amount);
@@ -6245,7 +6245,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
         },
         "hsep3": ContextMenu.SEPARATOR,
         'undo': {
-          name: 'Undo',
+          name: '撤销',
           callback: function(){
             this.undo();
           },
@@ -6254,7 +6254,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
           }
         },
         'redo': {
-          name: 'Redo',
+          name: '重做',
           callback: function(){
             this.redo();
           },

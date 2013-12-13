@@ -1,42 +1,111 @@
+function score_validator(value, callback) {
+    if (isNaN(value))
+        callback(false);
+    if (value < 0 || value > 100)
+        callback(false);
+    else
+        callback(true);
+}
 
-var data = [
-{id: 1, teacher: "LF", courseName: "test", overallFeedback: "90", teachingManner: "80", teachingMethod: "12", teachingEffect: "100", weightingAverage: "100"}
-];
+function getInitData(courseId) {
+    $.ajax({
+        url: 'json/' + courseId + '.json',
+        dataType: 'json',
+        type: 'GET',
+        success: function (res) {
+            $('#scoreTable').data('handsontable').loadData(res);
+        }
+    });
+}
+
+function initScoreTable(courseId) {
+    getInitData(courseId);
+}
+
+var TAGS = { "overallFeedback": "overallFeedback",
+    "teachingManner": "teachingManner",
+    "teachingMethod": "teachingMethod",
+    "teachingEffect": "teachingEffect" };
+
+
+//=====================================================================================================================================
 
 $("#scoreTable").handsontable({
-	data: data,
-	startCols: 8,
-	colHeaders: ["ĞòºÅ", "Ö÷½²½ÌÊ¦", "¿Î³ÌÃû³Æ", "×ÜÌåÆÀ¼Û(50%)", "½ÌÑ§Ì¬¶È(12.5%)", "½ÌÑ§·½·¨ºÍÊÖ¶Î(17.5%)", "½ÌÑ§Ğ§¹û(20%)", "¼ÓÈ¨×Ü·Ö"],
-	columnSorting: true,
-	columns: [
-		{
-			data: "id"
-		},
-		{
-			data: "teacher"
-		},
-		{
-			data: "courseName"
-		},
-		{
-			data: "overallFeedback",
-			type: "numeric"
-		},
-		{
-			data: "teachingManner",
-			type: "numeric"
-		},
-		{
-			data: "teachingMethod",
-			type: "numeric"
-		},
-		{
-			data: "teachingEffect",
-			type: "numeric"
-		},
-		{
-			data: "weightingAverage",
-			type: "numeric"
-		}
-	]
+    startCols: 5,
+    minSpareRows: 1,
+    contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo'],
+    currentRowClassName: 'currentRow',
+    currentColClassName: 'currentCol',
+    rowHeaders: true,
+    colHeaders: ["æ€»ä½“è¯„ä»·(50%)", "æ•™å­¦æ€åº¦(12.5%)", "æ•™å­¦æ–¹æ³•å’Œæ‰‹æ®µ(17.5%)", "æ•™å­¦æ•ˆæœ(20%)", "åŠ æƒæ€»åˆ†"],
+    columnSorting: true,
+    columns: [
+        {
+            data: TAGS["overallFeedback"],
+            type: "numeric",
+            validator: score_validator,
+            allowInvalid: false
+        },
+        {
+            data: TAGS["teachingManner"],
+            type: "numeric",
+            validator: score_validator,
+            allowInvalid: false
+        },
+        {
+            data: TAGS["teachingMethod"],
+            type: "numeric",
+            validator: score_validator,
+            allowInvalid: false
+        },
+        {
+            data: TAGS["teachingEffect"],
+            type: "numeric",
+            validator: score_validator,
+            allowInvalid: false
+        },
+        {
+            data: "weightingAverage",
+            readOnly: true
+        }
+    ],
+
+    afterChange: function (changes, source) {
+        if (!changes)
+            return;
+
+        var instance = $('#scoreTable').handsontable('getInstance');
+        $.each(changes, function (index, change) {
+            var rowIndex = change[0];
+            var colIndex = change[1];
+            var oldValue = change[2];
+            var newValue = change[3];
+
+            for (tag in TAGS) {
+                if (TAGS[tag] == colIndex) {
+                    var scores = { "overallFeedback": instance.getDataAtCell(rowIndex, 0),
+                        "teachingManner": instance.getDataAtCell(rowIndex, 1),
+                        "teachingMethod": instance.getDataAtCell(rowIndex, 2),
+                        "teachingEffect": instance.getDataAtCell(rowIndex, 3)};
+                    instance.setDataAtCell(rowIndex, 4, calcWeightingAverage(scores));
+                }
+            }
+        });
+    }
+});
+
+$(document).ready(function(){
+    $("#printButton").click(function(){
+        $("#printArea").printArea();
+    });
+
+    $('#courseList a').bind("click", function() {
+        var id = this.id;
+
+        initScoreTable(id);
+        $("#saveButton").removeClass("disabled");
+        $("#printButton").removeClass("disabled");
+        $("#currentCourse").text(this.text);
+        $("#scoreTableTitle").text(this.text + " â€”â€” å­¦ç”Ÿè¯„ä»·");
+    })
 });
