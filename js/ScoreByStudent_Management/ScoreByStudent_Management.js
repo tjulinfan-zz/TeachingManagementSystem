@@ -8,12 +8,43 @@ function score_validator(value, callback) {
 }
 
 function getInitData(courseId) {
+    $("#loader").show();
     $.ajax({
         url: 'json/' + courseId + '.json',
         dataType: 'json',
         type: 'GET',
+        complete: function() {
+           $("#loader").hide();
+        },
         success: function (res) {
             $('#scoreTable').data('handsontable').loadData(res);
+        },
+        error: function() {
+            alert("错误！");
+        }
+    });
+}
+
+function saveScoreTableData(courseId, auto) {
+    $("#loader").show();
+    var data = $('#scoreTable').handsontable('getInstance').getData();
+    data = {"class_id": courseId, "scoreTable": data};
+    $.ajax({
+        url: "json/" + courseId + ".json",
+        dataType: "json",
+        type: "post",
+        data: data,
+        complete: function() {
+            $("#loader").hide();
+        },
+        success: function (data) {
+            if (!auto) {
+                $('#aveScoreTable').data('handsontable').loadData(data);
+                $("#aveScoreTable").show();
+            }
+        },
+        error: function (data) {
+            alert("保存失败！");
         }
     });
 }
@@ -66,7 +97,9 @@ $("#scoreTable").handsontable({
         },
         {
             data: "weightingAverage",
-            readOnly: true
+            readOnly: true,
+            type: 'numeric',
+            format: '0.00'
         }
     ],
 
@@ -94,17 +127,48 @@ $("#scoreTable").handsontable({
     }
 });
 
+$("#aveScoreTable").handsontable({
+    minSpareRows: 1,
+    colHeaders: ["总体评价(50%)", "教学态度(12.5%)", "教学方法和手段(17.5%)", "教学效果(20%)", "加权总分"],
+    rowHeaders: ["平均"],
+    columns: [
+        {
+            readOnly: true
+        },
+        {
+            readOnly: true
+        },
+        {
+            readOnly: true
+        },
+        {
+            readOnly: true
+        },
+        {
+            readOnly: true
+        }
+    ]
+});
+
 $(document).ready(function(){
+    $("#printArea").hide();
+
+    $("#saveButton").click(function(){
+        saveScoreTableData(this.name, false);
+    });
     $("#printButton").click(function(){
         $("#printArea").printArea();
     });
 
-    $('#courseList a').bind("click", function() {
-        var id = this.id;
+    $("#courseList").delegate("a", "click", function() {
+        $("#aveScoreTable").hide();
 
+        var id = this.id;
+        $("#printArea").show();
         initScoreTable(id);
         $("#saveButton").removeClass("disabled");
         $("#printButton").removeClass("disabled");
+        $("#saveButton").attr('name', id);
         $("#currentCourse").text(this.text);
         $("#scoreTableTitle").text(this.text + " —— 学生评价");
     })
