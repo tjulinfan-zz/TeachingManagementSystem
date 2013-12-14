@@ -10,13 +10,19 @@ function isValidNumber(element) {
     return element >= 0 && element <= 100;
 }
 
+function isRowFully(scores) {
+    for (c in weighting) {
+        if (!isValidNumber(scores[c]))
+            return false;
+    }
+    return true;
+}
+
 function calcWeightingAverage(scores) {
     var ret = 0;
     for (c in weighting) {
-        console.log(c + " " + scores[c] + " " + isValidNumber(scores[c]));
-        if (!isValidNumber(scores[c]))
-            return null;
-        ret += weighting[c] * scores[c];
+        if (isValidNumber(scores[c]))
+            ret += weighting[c] * scores[c];
     }
     return ret;
 }
