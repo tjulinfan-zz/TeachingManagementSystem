@@ -6,10 +6,6 @@
     background-color: #F9F9FB;
 }
 
-#operationArea {
-    margin: 20px;
-}
-
 .loader,
 .loader > .loader-img {
     position: absolute;
@@ -29,4 +25,8 @@
     display: block;
     background: url("../../img/loading.gif") no-repeat;
     background-position: 50% 50%;
+}
+
+#wrap {
+    padding-top: 30px;
 }
