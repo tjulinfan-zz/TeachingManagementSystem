@@ -132,7 +132,7 @@ $("#scoreTable").handsontable({
 });
 
 $("#aveScoreTable").handsontable({
-    minSpareRows: 1,
+    minSpareRows: 0,
     colHeaders: ["总体评价(50%)", "教学态度(12.5%)", "教学方法和手段(17.5%)", "教学效果(20%)", "加权总分"],
     rowHeaders: ["平均"],
     columns: [
