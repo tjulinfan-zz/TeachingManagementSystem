@@ -15,38 +15,41 @@
 
 <body>
 
-<div id="wrap" class="container">
-    <div id="sidebar" class="col-lg-3">
+<div id="wrap" class="col-md-12">
+    <div class="sidebar col-md-3">
         <div class="list-group">
             <a href="#" class="list-group-item active">学生评分管理</a>
             <a href="#" class="list-group-item">学生评分统计</a>
             </ul>
         </div>
     </div>
-    <div id="operationArea" class="col-lg-6">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span id="currentCourse">请选择一门课程</span>
-                <span class="caret"></span>
-            </button>
+    <div class="col-md-offset-3">
+        <div id="operationArea">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span id="currentCourse">请选择一门课程</span>
+                    <span class="caret"></span>
+                </button>
 
-            <ul id="courseList" class="dropdown-menu">
-            </ul>
+                <ul id="courseList" class="dropdown-menu">
+                </ul>
+            </div>
+
+            <button id="saveButton" type="button" class="btn btn-info disabled">保存</button>
+            <button id="printButton" type="button" class="btn btn-info disabled">打印</button>
         </div>
 
-        <button id="saveButton" type="button" class="btn btn-info disabled">保存</button>
-        <button id="printButton" type="button" class="btn btn-info disabled">打印</button>
+        <div id="printArea">
+            <blockquote id="scoreTableTitle"></blockquote>
+            <div id="scoreTable">
+            </div>
+            <br/>
+
+            <div id="aveScoreTable">
+            </div>
+        </div>
     </div>
 
-    <div id="printArea" class="col-md-12">
-        <blockquote id="scoreTableTitle"></blockquote>
-        <div id="scoreTable">
-        </div>
-        <br/>
-
-        <div id="aveScoreTable">
-        </div>
-    </div>
 </div>
 
 <div id="loader" class="loader">
