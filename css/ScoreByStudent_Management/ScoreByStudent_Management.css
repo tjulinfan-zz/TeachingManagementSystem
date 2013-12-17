@@ -27,6 +27,6 @@
 
 .loader > .loader-img {
     display: block;
-    background: url("/img/loading.gif") no-repeat;
+    background: url("../../img/loading.gif") no-repeat;
     background-position: 50% 50%;
 }

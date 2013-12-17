@@ -10,14 +10,14 @@ function score_validator(value, callback) {
 function getInitData(courseId) {
     $("#loader").show();
     $.ajax({
-        url: 'json/' + courseId + '.json',
+        url: '/student_system/student_score_getByClassId?class_id=' + courseId,
         dataType: 'json',
         type: 'GET',
         complete: function() {
            $("#loader").hide();
         },
         success: function (res) {
-            $('#scoreTable').data('handsontable').loadData(res);
+            $('#scoreTable').data('handsontable').loadData(res.score_table);
         },
         error: function() {
             alert("错误！");
@@ -28,9 +28,10 @@ function getInitData(courseId) {
 function saveScoreTableData(courseId, auto) {
     $("#loader").show();
     var data = $('#scoreTable').handsontable('getInstance').getData();
-    data = {"class_id": courseId, "scoreTable": data};
+    data = {"class_id": courseId, "score_table": JSON.stringify(data)};
+	console.log(data);
     $.ajax({
-        url: "json/" + courseId + ".json",
+        url: "/student_system/student_score_insert",
         dataType: "json",
         type: "post",
         data: data,
@@ -39,11 +40,14 @@ function saveScoreTableData(courseId, auto) {
         },
         success: function (data) {
             if (!auto) {
+				data = [data[0]];
+				console.log(data);
+				$('#aveScoreTable').show();
                 $('#aveScoreTable').data('handsontable').loadData(data);
-                $("#aveScoreTable").show();
             }
         },
         error: function (data) {
+			console.log(data);
             alert("保存失败！");
         }
     });
@@ -133,19 +137,34 @@ $("#aveScoreTable").handsontable({
     rowHeaders: ["平均"],
     columns: [
         {
-            readOnly: true
+			data: TAGS["overallFeedback"],
+            readOnly: true,
+			type: 'numeric',
+            format: '0.00'
         },
         {
-            readOnly: true
+			data: TAGS["teachingManner"],
+            readOnly: true,
+			type: 'numeric',
+            format: '0.00'
         },
         {
-            readOnly: true
+			data: TAGS["teachingMethod"],
+            readOnly: true,
+			type: 'numeric',
+            format: '0.00'
         },
         {
-            readOnly: true
+			data: TAGS["teachingEffect"],
+            readOnly: true,
+			type: 'numeric',
+            format: '0.00'
         },
         {
-            readOnly: true
+			data: "weightingAverage",
+            readOnly: true,
+			type: 'numeric',
+            format: '0.00'
         }
     ]
 });
@@ -161,6 +180,11 @@ $(document).ready(function(){
     });
 
     $("#courseList").delegate("a", "click", function() {
+        console.log($('#currentCourse').text());
+        if ($('#currentCourse').text() != '请选择一门课程') {
+            if (confirm('确定数据已经保存？') == false)
+                return;
+        }
         $("#aveScoreTable").hide();
 
         var id = this.id;
@@ -172,4 +196,8 @@ $(document).ready(function(){
         $("#currentCourse").text(this.text);
         $("#scoreTableTitle").text(this.text + " —— 学生评价");
     })
+
+    $(window).bind('beforeunload', function(){
+        return '您确定已经保存数据了吗？';
+    });
 });
