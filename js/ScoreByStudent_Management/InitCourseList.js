@@ -3,7 +3,7 @@
  */
 
 $.ajax({
-    url: '/student_system/class_getAll.php',
+    url: '/student_system/class_getAll',
     dataType: 'json',
     type: 'GET',
     success: function(res) {

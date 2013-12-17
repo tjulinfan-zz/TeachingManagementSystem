@@ -6,8 +6,8 @@
     background-color: #F9F9FB;
 }
 
-#wrap {
-    margin-top: 30px;
+#operationArea {
+    margin: 20px;
 }
 
 .loader,
@@ -27,6 +27,6 @@
 
 .loader > .loader-img {
     display: block;
-    background: url("/img/loading.gif") no-repeat;
+    background: url("../../img/loading.gif") no-repeat;
     background-position: 50% 50%;
 }
