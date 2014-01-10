@@ -62,6 +62,8 @@ var TAGS = { "overallFeedback": "overallFeedback",
     "teachingMethod": "teachingMethod",
     "teachingEffect": "teachingEffect" };
 
+var hasSaved = true;
+
 
 //=====================================================================================================================================
 
@@ -110,6 +112,7 @@ $("#scoreTable").handsontable({
     afterChange: function (changes, source) {
         if (!changes)
             return;
+        hasSaved = false;
 
         var instance = $('#scoreTable').handsontable('getInstance');
         $.each(changes, function (index, change) {
@@ -173,6 +176,7 @@ $(document).ready(function(){
     $("#printArea").hide();
 
     $("#saveButton").click(function(){
+        hasSaved = true;
         saveScoreTableData(this.name, false);
     });
     $("#printButton").click(function(){
@@ -180,8 +184,7 @@ $(document).ready(function(){
     });
 
     $("#courseList").delegate("a", "click", function() {
-        console.log($('#currentCourse').text());
-        if ($('#currentCourse').text() != '请选择一门课程') {
+        if ($('#currentCourse').text() != '请选择一门课程' && !hasSaved) {
             if (confirm('确定数据已经保存？') == false)
                 return;
         }

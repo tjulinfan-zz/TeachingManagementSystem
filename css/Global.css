@@ -1,0 +1,32 @@
+.handsontable .currentRow {
+    background-color: #E7E8EF;
+}
+
+.handsontable .currentCol {
+    background-color: #F9F9FB;
+}
+
+.loader,
+.loader > .loader-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.loader {
+    display: none;
+    background: #000000;
+    opacity: 0.2;
+}
+
+.loader > .loader-img {
+    display: block;
+    background: url("../img/loading.gif") no-repeat;
+    background-position: 50% 50%;
+}
+
+#wrap {
+    padding-top: 30px;
+}
