@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-select.min.css"/>
     <link rel="stylesheet" href="css/jquery.handsontable.full.css"/>
     <link rel="stylesheet" href="css/ScoreByStudent_Management/ScoreByStudent_Management.css"/>
 
@@ -24,34 +25,31 @@
             <a href="ScoreByStudent_Statics.html" class="list-group-item">学生评分统计</a>
         </div>
     </div>
-    <div class="col-md-offset-3">
-        <div id="operationArea">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span id="currentCourse">请选择一门课程</span>
-                    <span class="caret"></span>
-                </button>
-
-                <ul id="courseList" class="dropdown-menu">
-                </ul>
+    <div id="operationArea" class="col-md-8">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse">
+                <label>
+                    <select id="courseList" data-live-search="true" title="请选择一门课程" style="display: none">
+                        <option></option>
+                    </select>
+                </label>
+                <button id="saveButton" type="button" class="btn btn-info disabled navbar-btn">保存</button>
+                <button id="printButton" type="button" class="btn btn-info disabled navbar-btn">打印</button>
+                <button id="btn-export" type="button" class="btn btn-info disabled navbar-btn">导出</button>
             </div>
-
-            <button id="saveButton" type="button" class="btn btn-info disabled">保存</button>
-            <button id="printButton" type="button" class="btn btn-info disabled">打印</button>
-        </div>
-
+            <!-- /.navbar-collapse -->
+        </nav>
         <div id="printArea">
             <blockquote id="scoreTableTitle"></blockquote>
             <div id="scoreTable">
             </div>
             <br/>
-
             <div id="aveScoreTable">
             </div>
         </div>
     </div>
-
 </div>
+
 
 <div id="loader" class="loader">
     <div class="loader-img">
@@ -60,7 +58,13 @@
 
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="js/ScoreByStudent_Management/InitCourseList.js"></script>
-<script src="js/functions.js" charset="UTF-8"></script>
-<script src="js/ScoreByStudent_Management/ScoreByStudent_Management.js" charset="UTF-8"></script>
+<script src="js/functions.js"></script>
+<script src="js/ScoreByStudent_Management/ScoreByStudent_Management.js"></script>
+<script src="bootstrap/js/bootstrap-select.js"></script>
+<script type="text/javascript">
+    $(window).on('load', function () {
+        $('#courseList').selectpicker({});
+    });
+</script>
 </body>
 </html>

@@ -2,11 +2,10 @@
  * Created by LinFan on 13-12-17.
  */
 ComponentNamespace = {
-
     rankList: {
         container: $('#rankList'),
 
-        init: function() {
+        init: function () {
             this.container.handsontable({
                 minSpareRows: 0,
                 currentRowClassName: 'currentRow',
@@ -68,21 +67,42 @@ ComponentNamespace = {
             });
         },
 
-        loadData: function(data) {
+        loadData: function (data) {
             this.container.data('handsontable').loadData(data);
         },
 
-        getDataAjax: function() {
+        getAllData: function () {
             ComponentNamespace.loaderLayer.show();
             $.ajax({
                 url: UrlNamespace.getStudentScoreRank,
                 dataType: 'json',
                 type: 'GET',
-                success: function(res) {
+                success: function (res) {
                     ComponentNamespace.rankList.loadData(res)
                 },
-                complete: function() {
+                complete: function () {
                     ComponentNamespace.loaderLayer.hide();
+                },
+                error: function (res) {
+
+                }
+            });
+        },
+
+        getFilteredData: function() {
+            ComponentNamespace.loaderLayer.show();
+            $.ajax({
+                url: "/student_system/get_student_score_rank2",
+                dataType: 'json',
+                type: 'GET',
+                success: function (res) {
+                    ComponentNamespace.rankList.loadData(res)
+                },
+                complete: function () {
+                    ComponentNamespace.loaderLayer.hide();
+                },
+                error: function (res) {
+
                 }
             });
         }
@@ -91,12 +111,25 @@ ComponentNamespace = {
     loaderLayer: {
         div: $('#loader'),
 
-        hide: function() {
+        hide: function () {
             this.div.hide()
         },
 
-        show: function() {
+        show: function () {
             this.div.show()
         }
     }
 };
+
+$(document).ready(function () {
+    ComponentNamespace.rankList.init();
+    ComponentNamespace.rankList.getAllData();
+
+    $("#checkbox-filter").bind("click", function() {
+        if (this.checked) {
+            ComponentNamespace.rankList.getFilteredData();
+        } else {
+            ComponentNamespace.rankList.getAllData();
+        }
+    })
+});

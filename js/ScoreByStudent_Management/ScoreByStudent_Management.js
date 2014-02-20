@@ -42,8 +42,7 @@ function saveScoreTableData(courseId, auto) {
             if (!auto) {
 				data = [data[0]];
 				console.log(data);
-				$('#aveScoreTable').show();
-                $('#aveScoreTable').data('handsontable').loadData(data);
+				$('#aveScoreTable').data('handsontable').loadData(data).show();
             }
         },
         error: function (data) {
@@ -183,22 +182,28 @@ $(document).ready(function(){
         $("#printArea").printArea();
     });
 
-    $("#courseList").delegate("a", "click", function() {
-        if ($('#currentCourse').text() != '请选择一门课程' && !hasSaved) {
+    $("#courseList").bind("change", function() {
+        var $this = $(this);
+        var selectedIndex = $this.selectedIndex;
+
+        if (selectedIndex != 0 && !hasSaved) {
             if (confirm('确定数据已经保存？') == false)
                 return;
         }
-        $("#aveScoreTable").hide();
 
-        var id = this.id;
-        $("#printArea").show();
+        $("#aveScoreTable").hide();
+        var elem = $(this).find('option:selected');
+        var id = elem.attr("id");
         initScoreTable(id);
-        $("#saveButton").removeClass("disabled");
+        $("#printArea").show();
+        $("#saveButton")
+            .removeClass("disabled")
+            .attr('name', id);
         $("#printButton").removeClass("disabled");
-        $("#saveButton").attr('name', id);
+        $('#btn-export').removeClass('disabled');
         $("#currentCourse").text(this.text);
         $("#scoreTableTitle").text(this.text + " —— 学生评价");
-    })
+    });
 
     $(window).bind('beforeunload', function(){
         return '您确定已经保存数据了吗？';
