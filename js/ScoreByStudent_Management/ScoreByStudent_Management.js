@@ -185,6 +185,8 @@ $(document).ready(function(){
     $("#courseList").bind("change", function() {
         var $this = $(this);
         var selectedIndex = $this.selectedIndex;
+        var selectedElem = $(this).find('option:selected');
+        var id = selectedElem.attr("id");
 
         if (selectedIndex != 0 && !hasSaved) {
             if (confirm('确定数据已经保存？') == false)
@@ -192,8 +194,6 @@ $(document).ready(function(){
         }
 
         $("#aveScoreTable").hide();
-        var elem = $(this).find('option:selected');
-        var id = elem.attr("id");
         initScoreTable(id);
         $("#printArea").show();
         $("#saveButton")
@@ -201,8 +201,7 @@ $(document).ready(function(){
             .attr('name', id);
         $("#printButton").removeClass("disabled");
         $('#btn-export').removeClass('disabled');
-        $("#currentCourse").text(this.text);
-        $("#scoreTableTitle").text(this.text + " —— 学生评价");
+        $("#scoreTableTitle").text(selectedElem.text() + " —— 学生评价");
     });
 
     $(window).bind('beforeunload', function(){
