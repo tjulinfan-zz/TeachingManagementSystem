@@ -119,9 +119,10 @@ ComponentNamespace = {
             form.attr("method","post");
             form.attr("action","/student_system/student_score_rank_excel");
             var input1=$("<input>");
-            input1.attr("type","hidden");
+            input1.attr("type","text");
             input1.attr("name","score_table");
             input1.attr("value",JSON.stringify(this.container.data('handsontable').getData()));
+            form.append(input1);
             form.submit();//表单提交
         }
     },
