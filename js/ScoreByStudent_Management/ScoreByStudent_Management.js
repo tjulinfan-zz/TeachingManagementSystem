@@ -13,13 +13,13 @@ function getInitData(courseId) {
         url: '/student_system/student_score_getByClassId?class_id=' + courseId,
         dataType: 'json',
         type: 'GET',
-        complete: function() {
-           $("#loader").hide();
+        complete: function () {
+            $("#loader").hide();
         },
         success: function (res) {
             $('#scoreTable').data('handsontable').loadData(res.score_table);
         },
-        error: function() {
+        error: function () {
             alert("错误！");
         }
     });
@@ -29,24 +29,26 @@ function saveScoreTableData(courseId, auto) {
     $("#loader").show();
     var data = $('#scoreTable').handsontable('getInstance').getData();
     data = {"class_id": courseId, "score_table": JSON.stringify(data)};
-	console.log(data);
+    console.log(data);
     $.ajax({
         url: "/student_system/student_score_insert",
         dataType: "json",
         type: "post",
         data: data,
-        complete: function() {
+        complete: function () {
             $("#loader").hide();
         },
         success: function (data) {
             if (!auto) {
-				data = [data[0]];
-				console.log(data);
-				$('#aveScoreTable').data('handsontable').loadData(data).show();
+                data = [data[0]];
+                console.log(data);
+                $('#aveScoreTable').show().data('handsontable').loadData(testData);
             }
         },
         error: function (data) {
-			console.log(data);
+            var testData = [{"overallFeedback":0,"teachingManner":0,"teachingMethod":0,"teachingEffect":0,"weightingAverage":0}];
+            $('#aveScoreTable').show().data('handsontable').loadData(testData);
+            console.log(data);
             alert("保存失败！");
         }
     });
@@ -139,72 +141,73 @@ $("#aveScoreTable").handsontable({
     rowHeaders: ["平均"],
     columns: [
         {
-			data: TAGS["overallFeedback"],
+            data: TAGS["overallFeedback"],
             readOnly: true,
-			type: 'numeric',
+            type: 'numeric',
             format: '0.00'
         },
         {
-			data: TAGS["teachingManner"],
+            data: TAGS["teachingManner"],
             readOnly: true,
-			type: 'numeric',
+            type: 'numeric',
             format: '0.00'
         },
         {
-			data: TAGS["teachingMethod"],
+            data: TAGS["teachingMethod"],
             readOnly: true,
-			type: 'numeric',
+            type: 'numeric',
             format: '0.00'
         },
         {
-			data: TAGS["teachingEffect"],
+            data: TAGS["teachingEffect"],
             readOnly: true,
-			type: 'numeric',
+            type: 'numeric',
             format: '0.00'
         },
         {
-			data: "weightingAverage",
+            data: "weightingAverage",
             readOnly: true,
-			type: 'numeric',
+            type: 'numeric',
             format: '0.00'
         }
     ]
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     $("#printArea").hide();
-
-    $("#saveButton").click(function(){
+    $("#saveButton").click(function () {
         hasSaved = true;
         saveScoreTableData(this.name, false);
     });
-    $("#printButton").click(function(){
+    $("#printButton").click(function () {
         $("#printArea").printArea();
     });
 
-    $("#courseList").bind("change", function() {
-        var $this = $(this);
-        var selectedIndex = $this.selectedIndex;
-        var selectedElem = $(this).find('option:selected');
-        var id = selectedElem.attr("id");
+    $("#courseList")
+        .selectpicker({})
+        .bind("change", function () {
+            var $this = $(this);
+            var selectedIndex = $this.selectedIndex;
+            var selectedElem = $(this).find('option:selected');
+            var id = selectedElem.attr("id");
 
-        if (selectedIndex != 0 && !hasSaved) {
-            if (confirm('确定数据已经保存？') == false)
-                return;
-        }
+            if (selectedIndex != 0 && !hasSaved) {
+                if (confirm('确定数据已经保存？') == false)
+                    return;
+            }
 
-        $("#aveScoreTable").hide();
-        initScoreTable(id);
-        $("#printArea").show();
-        $("#saveButton")
-            .removeClass("disabled")
-            .attr('name', id);
-        $("#printButton").removeClass("disabled");
-        $('#btn-export').removeClass('disabled');
-        $("#scoreTableTitle").text(selectedElem.text() + " —— 学生评价");
-    });
+            $("#aveScoreTable").hide();
+            initScoreTable(id);
+            $("#printArea").show();
+            $("#saveButton")
+                .removeClass("disabled")
+                .attr('name', id);
+            $("#printButton").removeClass("disabled");
+            $('#btn-export').removeClass('disabled');
+            $("#scoreTableTitle").text(selectedElem.text() + " —— 学生评价");
+        });
 
-    $(window).bind('beforeunload', function(){
+    $(window).bind('beforeunload', function () {
         return '您确定已经保存数据了吗？';
     });
 });
