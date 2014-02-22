@@ -42,7 +42,7 @@ function saveScoreTableData(courseId, auto) {
             if (!auto) {
                 data = [data[0]];
                 console.log(data);
-                $('#aveScoreTable').show().data('handsontable').loadData(testData);
+                $('#aveScoreTable').show().data('handsontable').loadData(data);
             }
         },
         error: function (data) {
