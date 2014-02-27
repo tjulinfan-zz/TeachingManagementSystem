@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.PrintArea.js"></script>
+    <script src="js/jquery.handsontable.full.js"></script>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-select.min.css"/>
+    <link rel="stylesheet" href="css/jquery.handsontable.full.css"/>
+    <link rel="stylesheet" href="css/ScoreByStudent_Management/ScoreByStudent_Management.css"/>
+
+    <title>专家评分管理</title>
+</head>
+
+<body>
+
+<div id="wrap" class="col-md-12">
+    <div class="sidebar col-md-3">
+        <div class="list-group">
+            <a href="ScoreByStudent_Management.html" class="list-group-item">学生评分管理</a>
+            <a href="ScoreByStudent_Statics.html" class="list-group-item">学生评分统计</a>
+            <a href="ScoreByProfessor_Management.html" class="list-group-item active">专家评分管理</a>
+            <a href="ScoreByProfessor_Statics.html" class="list-group-item">专家评分统计</a>
+        </div>
+    </div>
+    <div id="operationArea" class="col-md-8">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse">
+                <label>
+                    <select id="courseList" data-live-search="true" title="请选择一门课程" style="display: none">
+                        <option></option>
+                    </select>
+                </label>
+                <button id="saveButton" type="button" class="btn btn-info disabled navbar-btn">保存</button>
+                <button id="printButton" type="button" class="btn btn-info disabled navbar-btn">打印</button>
+                <button id="btn-export" type="button" class="btn btn-info disabled navbar-btn">导出</button>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+        <div id="printArea">
+            <blockquote id="scoreTableTitle"></blockquote>
+            <div id="scoreTable">
+            </div>
+            <br/>
+            <div id="aveScoreTable">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="loader" class="loader">
+    <div class="loader-img">
+    </div>
+</div>
+
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/ScoreByStudent_Management/InitCourseList.js"></script>
+<script src="js/functions.js"></script>
+<script src="js/ScoreByStudent_Management/ScoreByProfessor_Management.js"></script>
+<script src="bootstrap/js/bootstrap-select.js"></script>
+</body>
+</html>

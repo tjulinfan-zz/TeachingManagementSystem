@@ -6211,7 +6211,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
         },
         "hsep1": ContextMenu.SEPARATOR,
         'col_left': {
-          name: 'Insert column on the left',
+          name: '在左侧加入一列',
           callback: function(key, selection){
             this.alter("insert_col", selection.start.col());
           },
@@ -6220,7 +6220,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
           }
         },
         'col_right': {
-          name: 'Insert column on the right',
+          name: '在右侧加入一列',
           callback: function(key, selection){
             this.alter("insert_col", selection.end.col() + 1);
           },
@@ -6237,7 +6237,7 @@ Handsontable.PluginHooks.add('afterGetColHeader', htSortColumn.getColHeader);
           }
         },
         'remove_col': {
-          name: 'Remove column',
+          name: '删除当前列',
           callback: function(key, selection){
             var amount = selection.end.col() - selection.start.col() + 1;
             this.alter("remove_col", selection.start.col(), amount);
